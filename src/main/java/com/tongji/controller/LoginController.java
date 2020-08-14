@@ -36,8 +36,8 @@ public class LoginController {
     public String loginPage(){
         return "login";
     }
-    @GetMapping("/success")
-    public String success(){
-        return "success";
-    }
+//    @GetMapping("/success")
+//    public String success(){
+//        return "success";
+//    }
 }
