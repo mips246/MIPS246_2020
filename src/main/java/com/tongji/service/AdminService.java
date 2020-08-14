@@ -20,4 +20,8 @@ public class AdminService {
         return adminDao.selectList(null);
     }
 
+    public Admin findById(String id){
+        return adminDao.selectById(id);
+    }
+
 }
