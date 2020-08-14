@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
  * @date 2020/8/14 11:28
  */
 @Controller
-@RequestMapping("/MIPS246")
 public class LoginController {
     @Autowired
     private AdminService adminService;
@@ -25,7 +24,7 @@ public class LoginController {
         if("admin".equals(role)){
             Admin admin = adminService.findById(userid);
             if(admin.getPassword().equals(userpass)){
-                return "success";
+                return "redirect:/admin";
             }else{
                 return "login";
             }
