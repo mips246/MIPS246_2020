@@ -1,7 +1,9 @@
 package com.tongji.controller;
 
 import com.tongji.pojo.Admin;
+import com.tongji.pojo.Teacher;
 import com.tongji.service.AdminService;
+import com.tongji.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +19,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class LoginController {
     @Autowired
     private AdminService adminService;
+
+    @Autowired
+    private TeacherService teacherService;
     @PostMapping("/login")
     public String login(@RequestParam("userid") String userid,
                         @RequestParam("role") String role,
@@ -29,12 +34,24 @@ public class LoginController {
                 return "login";
             }
         }
+
+        else if("teacher".equals(role)){
+            Teacher teacher = teacherService.findById(userid);
+            if(teacher!=null && teacher.getPassword().equals(userpass)){
+                return "redirect:/teacher.html";
+            }else{
+                return "redirect:/login.html";
+            }
+        }
+
         return "login";
     }
+    /*
     @GetMapping("/login")
     public String loginPage(){
         return "login";
     }
+    */
 //    @GetMapping("/success")
 //    public String success(){
 //        return "success";
