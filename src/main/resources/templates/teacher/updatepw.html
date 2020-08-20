@@ -18,33 +18,31 @@
     
     <script>
         $(document).ready(function(){
-        	var id = '<%=session.getAttribute("userid")%>'; 
         	$("#updatePwd").on("click",function(){
-            	var oldpwd = $("#old_password").val();
-            	var newpwd = $("#password").val();
-            	var confirmpwd = $("#confirm_password").val();
-            	if(confirmpwd!=newpwd){
+        		var userID = $("#userid").val();
+            	var oldPwd = $("#old_password").val();
+            	var newPwd = $("#password").val();
+            	var confirmPwd = $("#confirm_password").val();
+            	if(confirmPwd!=newPwd){
             		alert("输入的两次新密码必须一致！");
             	}
             	else{
-            		updatePwd(id,oldpwd,newpwd);
+            		updatePwd(userID,oldPwd,newPwd);
             	}
             })
         })
     </script>
     
     <script type="text/javascript">
-    function updatePwd(id,oldpwd,newpwd){
-    	var msg=["密码修改失败！","密码修改成功！"];
-    	$.ajax({    
-            url:"/MIPS246/TeacherServlet",//servlet文件的名称  
+    function updatePwd(userID,oldPwd,newPwd){
+    	$.ajax({
+            url:"/teacher/updatePassword",
             type:"POST",
             dataType:"json",
             data:{
-                method:"updatePwd",
-                userid:id,
-            	oldPassword:oldpwd,
-            	newPassword:newpwd
+                userID:userID,
+            	oldPassword:oldPwd,
+            	newPassword:newPwd
             },
             success:function(data){
             	//var message = data.message;
@@ -53,6 +51,7 @@
             	//data = eval("("+data+")");
             	//data = eval(data);
             	var json = JSON.stringify(data);
+            	alert(data);
             	if(json.indexOf("success") != -1){
             		alert("密码修改成功！");
             	}
@@ -96,6 +95,7 @@
 		        	
 		        	<div class="ibox-content">
 		        		<div class="form-horizontal m-t">
+							<input type="hidden" id="userid" name="userid" th:value="${session.userid}">
 		        			<div class="form-group">
 				        		<label class="col-sm-3 control-label">原密码：</label>
 				        		<div class="col-sm-8">

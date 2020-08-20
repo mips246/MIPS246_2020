@@ -5,10 +5,11 @@ import com.tongji.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/teacher")
@@ -23,5 +24,20 @@ public class TeacherController {
         for(Teacher teacher : teachers) System.out.println(teacher);
         model.addAttribute("teachers",teachers);
         return "teacher/test";
+    }
+
+    @ResponseBody
+    @PostMapping("/updatePassword")
+    public Map<String,Object> updatePassword(@RequestParam("userID") String userID,
+                                 @RequestParam("oldPassword") String oldPassword,
+                                 @RequestParam("newPassword") String newPassword){
+
+        System.out.println("< Teacher Modify Password >");
+        String[] msg = {"修改成功","修改失败，原密码错误","修改失败，服务器内部错误"};
+        int statusCode = teacherService.updatePassword(userID, oldPassword, newPassword);
+        Map<String,Object> map = new HashMap<String,Object>();
+        map.put("statusCode",statusCode);
+        map.put("msg",msg[statusCode]);
+        return map;
     }
 }
