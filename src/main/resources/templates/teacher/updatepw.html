@@ -45,36 +45,13 @@
             	newPassword:newPwd
             },
             success:function(data){
-            	//var message = data.message;
-            	//alert(message);
-            	//console.log(typeof data);
-            	//data = eval("("+data+")");
-            	//data = eval(data);
-            	var json = JSON.stringify(data);
-            	alert(data);
-            	if(json.indexOf("success") != -1){
-            		alert("密码修改成功！");
-            	}
-            	else{
-            		alert("密码修改失败！");
-            	}
-            	//alert(json);
-            	//var obj = JSON.parse(json);
-            	//alert(json["message"]);
-            	//alert(data["message"]);
-            	/*if(data["message"]=="success"){
-            		alert(msg[1]);
-            	}
-            	else{
-            		alert(msg[0]);
-            	}*/
-            	//document.location.replace('../logout.jsp');
-            	top.location.replace('../logout.jsp');
+				alert(data.msg);
+				if(data.statusCode==0) top.location.replace('../logout');
             },
             error:function(jqXHR, textStatus, errorThrown){
-            	alert("error！");
+            	alert("出错啦！");
             	//document.location.replace('../logout.jsp');
-            	top.location.replace('../logout.jsp');
+            	top.location.replace('../logout');
             }
         });
     }

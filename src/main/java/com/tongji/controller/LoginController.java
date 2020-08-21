@@ -54,14 +54,11 @@ public class LoginController {
 
         return "login";
     }
-    /*
-    @GetMapping("/login")
-    public String loginPage(){
-        return "login";
+
+    @GetMapping("/logout")
+    public String logout(HttpSession session){
+        System.out.println("< " + session.getAttribute("role") + " " + session.getAttribute("username") + "Logout >");
+        session.invalidate();
+        return "redirect:/login.html";
     }
-    */
-//    @GetMapping("/success")
-//    public String success(){
-//        return "success";
-//    }
 }
