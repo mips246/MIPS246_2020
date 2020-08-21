@@ -40,12 +40,12 @@ public class LoginController {
                 String username = admin.getUsername();
                 session.setAttribute("username",username);
                 System.out.println("< "+username+" 管理员登陆 >");
-                return "redirect:/admin";
+                return "redirect:/admin/admin.html";
             }else{
                 session.removeAttribute("role");
                 session.removeAttribute("userid");
                 map.put("msg","用户名或密码错误，请重试！");
-                return "login";
+                return "login.html";
             }
         }
 
@@ -55,7 +55,7 @@ public class LoginController {
                 String username = teacher.getTeachername();
                 session.setAttribute("username",username);
                 System.out.println("< "+username+" 老师登陆 >");
-                return "redirect:/teacher.html";
+                return "redirect:/teacher/teacher.html";
             }else{
                 session.removeAttribute("role");
                 session.removeAttribute("userid");

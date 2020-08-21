@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="GBK">
+    <meta charset="UTF-8">
     <link href="../css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
     <link href="../css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
     <link href="../css/animate.min.css" rel="stylesheet">
@@ -120,7 +120,7 @@
 
         <div class="row J_mainContent" id="content-main">
             <iframe class="J_iframe" name="iframe0" width="100%" height="100%"
-                    src="index.jsp" frameborder="0" data-id="index_v1.html" seamless></iframe>
+                    th:src="@{/admin/index.html}" frameborder="0" data-id="index_v1.html" seamless></iframe>
         </div>
 
         <div class="footer">
