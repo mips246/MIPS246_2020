@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 /**
  * @author Ryan
@@ -28,16 +29,22 @@ public class LoginController {
     public String login(@RequestParam("userid") String userid,
                         @RequestParam("role") String role,
                         @RequestParam("userpass") String userpass,
-                        HttpSession session){
+                        Map<String,Object> map,HttpSession session){
         //先在session中保存role以及userid，具体username在if分支中取出对应实体类后保存
         session.setAttribute("role",role);
         session.setAttribute("userid",userid);
 
         if("admin".equals(role)){
             Admin admin = adminService.findById(userid);
-            if(admin.getPassword().equals(userpass)){
+            if(admin!=null && admin.getPassword().equals(userpass)){
+                String username = admin.getUsername();
+                session.setAttribute("username",username);
+                System.out.println("< "+username+" 管理员登陆 >");
                 return "redirect:/admin";
             }else{
+                session.removeAttribute("role");
+                session.removeAttribute("userid");
+                map.put("msg","用户名或密码错误，请重试！");
                 return "login";
             }
         }
@@ -45,10 +52,15 @@ public class LoginController {
         else if("teacher".equals(role)){
             Teacher teacher = teacherService.findById(userid);
             if(teacher!=null && teacher.getPassword().equals(userpass)){
-                session.setAttribute("username",teacher.getTeachername());
+                String username = teacher.getTeachername();
+                session.setAttribute("username",username);
+                System.out.println("< "+username+" 老师登陆 >");
                 return "redirect:/teacher.html";
             }else{
-                return "redirect:/login.html";
+                session.removeAttribute("role");
+                session.removeAttribute("userid");
+                map.put("msg","用户名或密码错误，请重试！");
+                return "login.html";
             }
         }
 
@@ -57,7 +69,7 @@ public class LoginController {
 
     @GetMapping("/logout")
     public String logout(HttpSession session){
-        System.out.println("< " + session.getAttribute("role") + ": " + session.getAttribute("username") + " Logout >");
+        System.out.println("< "+session.getAttribute("role")+": "+session.getAttribute("username")+" Logout >");
         session.invalidate();
         return "redirect:/login.html";
     }

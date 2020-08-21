@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="zh-CN"  xmlns:th="http://www.thymeleaf.org">
 <head>
 <!--    <base href="<%=basePath%>">-->
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -56,7 +56,7 @@
                 <h3>同济大学计算机系统设计实验平台</h3>
                 <form action='login' method='post' onsubmit="return validate(this)">
                     <div class="middle-box">
-
+                        <p style="color: red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
                         <div class="form-group">
                             <input type="radio" name="role" value="student" checked="checked">学生
                             <input type="radio" name="role" value="teacher">教师
