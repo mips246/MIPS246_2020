@@ -57,7 +57,7 @@ public class LoginController {
 
     @GetMapping("/logout")
     public String logout(HttpSession session){
-        System.out.println("< " + session.getAttribute("role") + " " + session.getAttribute("username") + "Logout >");
+        System.out.println("< " + session.getAttribute("role") + ": " + session.getAttribute("username") + " Logout >");
         session.invalidate();
         return "redirect:/login.html";
     }
