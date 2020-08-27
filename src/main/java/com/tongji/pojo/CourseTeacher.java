@@ -1,10 +1,26 @@
 package com.tongji.pojo;
 
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
+
+@TableName("courseteachernew")
 public class CourseTeacher {
+
+    @TableId(type = IdType.AUTO)
+    private int id;
     private String courseid;
     private String teacherid;
     private String coursename;
     private String teachername;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
 
     public String getCourseid() {
         return courseid;
@@ -41,7 +57,8 @@ public class CourseTeacher {
     @Override
     public String toString() {
         return "CourseTeacher{" +
-                "courseid='" + courseid + '\'' +
+                "id=" + id +
+                ", courseid='" + courseid + '\'' +
                 ", teacherid='" + teacherid + '\'' +
                 ", coursename='" + coursename + '\'' +
                 ", teachername='" + teachername + '\'' +

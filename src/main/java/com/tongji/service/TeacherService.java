@@ -1,5 +1,6 @@
 package com.tongji.service;
 
+import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.tongji.dao.CourseTeacherDao;
 import com.tongji.dao.TeacherDao;
 import com.tongji.pojo.CourseTeacher;
@@ -7,7 +8,9 @@ import com.tongji.pojo.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -39,6 +42,8 @@ public class TeacherService {
 
     //获取教师所有课程
     public List<CourseTeacher> getCourses(String teacherId){
-        return courseTeacherDao.findByTeacherId(teacherId);
+        return courseTeacherDao.selectList(new EntityWrapper<CourseTeacher>()
+                                                .eq("teacherid",teacherId)
+                                            );
     }
 }

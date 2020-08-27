@@ -1,5 +1,6 @@
 package com.tongji.controller;
 
+import com.tongji.pojo.CourseTeacher;
 import com.tongji.pojo.Teacher;
 import com.tongji.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,9 +36,16 @@ public class TeacherController {
         System.out.println("< Teacher Modify Password >");
         String[] msg = {"修改成功","修改失败，原密码错误","修改失败，服务器内部错误"};
         int statusCode = teacherService.updatePassword(userID, oldPassword, newPassword);
-        Map<String,Object> map = new HashMap<String,Object>();
+        Map<String,Object> map = new HashMap<>();
         map.put("statusCode",statusCode);
         map.put("msg",msg[statusCode]);
         return map;
+    }
+
+    @GetMapping("/courses/{id}")
+    public String getCourses(@PathVariable("id") String teacherId,Model model){
+        List<CourseTeacher> courses = teacherService.getCourses(teacherId);
+        model.addAttribute("courses",courses);
+        return "teacher/teacher_course";
     }
 }

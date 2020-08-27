@@ -2,14 +2,14 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    
-    <link href="../css/bootstrap.min14ed.css?v=3.3.6" rel="stylesheet">
-    <link href="../css/font-awesome.min93e3.css?v=4.4.0" rel="stylesheet">
-    <link href="../css/animate.min.css" rel="stylesheet">
-    <link href="../css/style.min862f.css?v=4.1.0" rel="stylesheet">
-	<link href="../css/plugins/sweetalert/sweetalert.css" rel="stylesheet">
-    <script src="../js/plugins/sweetalert/sweetalert.min.js"></script>
-    
+
+	<link th:href="@{/css/bootstrap.min14ed.css?v=3.3.6}" rel="stylesheet">
+	<link th:href="@{/css/font-awesome.min93e3.css?v=4.4.0}" rel="stylesheet">
+	<link th:href="@{/css/animate.min.css}" rel="stylesheet">
+	<link th:href="@{/css/style.min862f.css?v=4.1.0}" rel="stylesheet">
+	<link th:href="@{/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet">
+	<script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
+
     <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -102,12 +102,14 @@
         	</div>
         </div>
     </div>
-    <script src="../js/jquery.min.js?v=2.1.4"></script>
-    <script src="../js/bootstrap.min.js?v=3.3.6"></script>
-    <script src="../js/content.min.js?v=1.0.0"></script>
-    <script src="../js/plugins/validate/jquery.validate.min.js"></script>
-    <script src="../js/plugins/validate/messages_zh.min.js"></script>
-    <script src="../js/demo/form-validate-demo.min.js"></script>
+
+	<script th:src="@{/js/jquery.min.js?v=2.1.4}"></script>
+	<script th:src="@{/js/bootstrap.min.js?v=3.3.6}"></script>
+	<script th:src="@{/js/content.min.js?v=1.0.0}"></script>
+	<script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+	<script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
+	<script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
+
     <script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
 </body>
 </html>

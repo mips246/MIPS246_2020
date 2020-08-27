@@ -5,6 +5,7 @@
     <title>Title</title>
 </head>
 <body>
-    <h3 th:each="teacher: ${teachers}" th:text="${teacher.teacherid}+${teacher.teachername}"></h3>
+<!--    <h3 th:each="teacher: ${teachers}" th:text="${teacher.teacherid}+${teacher.teachername}"></h3>-->
+    <h3 th:each="course: ${courses}" th:text="${course.courseid}"></h3>
 </body>
 </html>

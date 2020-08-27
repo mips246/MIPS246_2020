@@ -24,6 +24,7 @@ public class MyMVCConfig implements WebMvcConfigurer{
         registry.addViewController("/teacher/teacher.html").setViewName("teacher/teacher");
         registry.addViewController("/teacher/index.html").setViewName("teacher/index");
         registry.addViewController("/teacher/updatePassword.html").setViewName("teacher/updatepw");
+        registry.addViewController("/teacher/courses.html").setViewName("/teacher/teacher_course");
     }
 
     @Override
@@ -31,7 +32,7 @@ public class MyMVCConfig implements WebMvcConfigurer{
         //拦截器的添加顺序就是执行顺序
         //登陆拦截器
         registry.addInterceptor(new LoginHandlerInterceptor()).addPathPatterns("/**")
-                .excludePathPatterns("/login.html","/login");
+                .excludePathPatterns("/login.html","/login","/css/**","/fonts/**","/js/**");
 
         //教师访问拦截器，阻止教师访问管理员与学生相关页面
         registry.addInterceptor(new TeacherHandlerInterceptor()).addPathPatterns("/admin/**","/student/**");
