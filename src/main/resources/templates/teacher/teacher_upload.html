@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+
+	<link th:href="@{/css/bootstrap.min14ed.css?v=3.3.6}" rel="stylesheet">
+	<link th:href="@{/css/font-awesome.min93e3.css?v=4.4.0}" rel="stylesheet">
+	<link th:href="@{/css/animate.min.css}" rel="stylesheet">
+	<link th:href="@{/css/style.min862f.css?v=4.1.0}" rel="stylesheet">
+	<link th:href="@{/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet">
+	<script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
+    
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <title>上传课程资料</title>
+    
+</head>
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">
+    	<div class="row">
+    		<div class="col-sm-3">
+        	</div>
+        	<div class="col-sm-6">
+        		<div class="ibox float-e-margins">
+        			<div class="ibox-title">
+		        		<h3>上传课程资料</h3>
+		        	</div>
+		        	
+			        
+			        <div class="ibox-content">
+						<div class="form-horizontal m-t">
+							<form name="upload" method="post" action="/MIPS246/UploadServlet" enctype="multipart/form-data">
+								<div class="form-group">
+									<label class="col-sm-4 control-label">请选择上传类型:</label>
+									<div class="col-sm-4">
+										<select name="filetype" class="form-control inline">
+					        				<option value="0">作业要求</option>
+					        				<option value="1">课程视频</option>
+					        				<option value="3">课程讲义</option>
+					        			</select>
+				        			</div>
+			        			</div>
+
+			        			<div class="form-group">
+									<label class="col-sm-4 control-label">请选课程:</label>
+									<div class="col-sm-6">
+										<select id="selectList" name="courseid" class="form-control inline">
+					        				<option th:each="course: ${courses}" th:value="${course.courseid}"
+													th:text="${course.courseid}+' '+${course.coursename}">
+											</option>
+					        			</select>
+				        			</div>
+			        			</div>
+
+			        			<div class="form-group">
+									<label class="col-sm-4 control-label">请输入对应的课程小节:</label>
+									<div class="col-sm-2">
+										<input class="form-control" type="text" name="coursesection"/>
+									</div>
+								</div>
+
+								<input type="hidden" name="roletype" value="teacher"/>
+			        			<input type="hidden" name="userid" value=""/>
+			        			
+			        			<div class="form-group">
+						    		<label class="col-sm-4 control-label">请选择一个文件:</label>
+						    		<div class="col-sm-4">
+						    			<input type="file" name="uploadFile" />
+						    		</div>
+					    		</div>
+					    		
+					    		<div class="form-group">
+					    			<div class="col-sm-8 col-sm-offset-4">
+					    				<button type="submit" class="btn btn-primary">上传</button>
+					    			</div>
+					    		</div>
+			        			
+							</form>
+							
+				        </div>
+		        	</div>
+		        </div>
+        	</div>
+        </div>
+    </div>
+
+	<script th:src="@{/js/jquery.min.js?v=2.1.4}"></script>
+	<script th:src="@{/js/bootstrap.min.js?v=3.3.6}"></script>
+	<script th:src="@{/js/content.min.js?v=1.0.0}"></script>
+	<script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+	<script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
+	<script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
+
+    <script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
+</body>
+</html>

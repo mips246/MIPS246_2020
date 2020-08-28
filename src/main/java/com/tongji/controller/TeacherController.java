@@ -48,4 +48,11 @@ public class TeacherController {
         model.addAttribute("courses",courses);
         return "teacher/teacher_course";
     }
+
+    @GetMapping("/upload/{id}")
+    public String getCourses2(@PathVariable("id") String teacherId,Model model){
+        List<CourseTeacher> courses = teacherService.getCourses(teacherId);
+        model.addAttribute("courses",courses);
+        return "teacher/teacher_upload";
+    }
 }
