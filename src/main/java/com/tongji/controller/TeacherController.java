@@ -1,13 +1,16 @@
 package com.tongji.controller;
 
 import com.tongji.pojo.CourseTeacher;
+import com.tongji.pojo.MyFile;
 import com.tongji.pojo.Teacher;
 import com.tongji.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,5 +57,22 @@ public class TeacherController {
         List<CourseTeacher> courses = teacherService.getCourses(teacherId);
         model.addAttribute("courses",courses);
         return "teacher/teacher_upload";
+    }
+
+    @PostMapping("/upload")
+    public String uploadFile(@RequestParam("file_type") int fileType,
+                             @RequestParam("courseid") String courseId,
+                             @RequestParam("course_section") int courseSection,
+                             @RequestParam("teacherid") String teacherId,
+                             @RequestParam("uploadFile") MultipartFile file){
+
+        MyFile myFile = new MyFile();
+        myFile.setCourseid(courseId);
+        myFile.setTeacherid(teacherId);
+        myFile.setFile_type(fileType);
+        myFile.setCourse_section(courseSection);
+        myFile.setFile_name(file.getOriginalFilename());
+
+        return null;
     }
 }

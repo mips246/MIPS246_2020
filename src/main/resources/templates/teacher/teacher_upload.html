@@ -30,11 +30,11 @@
 			        
 			        <div class="ibox-content">
 						<div class="form-horizontal m-t">
-							<form name="upload" method="post" action="/MIPS246/UploadServlet" enctype="multipart/form-data">
+							<form name="upload" method="post" th:action="@{/teacher/upload}" enctype="multipart/form-data">
 								<div class="form-group">
 									<label class="col-sm-4 control-label">请选择上传类型:</label>
 									<div class="col-sm-4">
-										<select name="filetype" class="form-control inline">
+										<select name="file_type" class="form-control inline">
 					        				<option value="0">作业要求</option>
 					        				<option value="1">课程视频</option>
 					        				<option value="3">课程讲义</option>
@@ -56,13 +56,12 @@
 			        			<div class="form-group">
 									<label class="col-sm-4 control-label">请输入对应的课程小节:</label>
 									<div class="col-sm-2">
-										<input class="form-control" type="text" name="coursesection"/>
+										<input class="form-control" type="text" name="course_section"/>
 									</div>
 								</div>
 
-								<input type="hidden" name="roletype" value="teacher"/>
-			        			<input type="hidden" name="userid" value=""/>
-			        			
+								<input type="hidden" name="teacherid" th:value="${session.userid}"/>
+
 			        			<div class="form-group">
 						    		<label class="col-sm-4 control-label">请选择一个文件:</label>
 						    		<div class="col-sm-4">
