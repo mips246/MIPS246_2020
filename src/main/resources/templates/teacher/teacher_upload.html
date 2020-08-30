@@ -14,10 +14,33 @@
     <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <title>上传课程资料</title>
+
+	<script type="text/javascript">
+		function loadCourses(){
+			var teacherId = "[[${session.userid}]]";
+			$.ajax({
+				url:"[[@{/teacher/courses}]]",
+				type:"POST",
+				data:{
+					teacherId:teacherId
+				},
+				dataType:"json",
+				success:function(data){
+					var courses = data["courses"];
+					for(var index in courses){
+						var courseid = courses[index].courseid;
+						var coursename = courses[index].coursename;
+						tt = "<option value='"+courseid+"'>"+ courseid + " " + coursename+"</option>";
+						$("#selectList").append(tt);
+					}
+				}
+			});
+		}
+	</script>
     
 </head>
-<body class="gray-bg">
-    <div class="wrapper wrapper-content animated fadeInRight">
+<body class="gray-bg" onload="loadCourses()">
+    <div class="wrapper wrapper-content">
     	<div class="row">
     		<div class="col-sm-3">
         	</div>
@@ -46,9 +69,6 @@
 									<label class="col-sm-4 control-label">请选课程:</label>
 									<div class="col-sm-6">
 										<select id="selectList" name="courseid" class="form-control inline">
-					        				<option th:each="course: ${courses}" th:value="${course.courseid}"
-													th:text="${course.courseid}+' '+${course.coursename}">
-											</option>
 					        			</select>
 				        			</div>
 			        			</div>
@@ -74,9 +94,11 @@
 					    				<button type="submit" class="btn btn-primary">上传</button>
 					    			</div>
 					    		</div>
-			        			
 							</form>
-							
+							<div style="text-align: center;">
+								<p style="color: red" th:text="${msg}" th:if="${not #strings.isEmpty(msg)}"></p>
+							</div>
+
 				        </div>
 		        	</div>
 		        </div>

@@ -2,12 +2,19 @@ package com.tongji.service;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
 import com.tongji.dao.CourseTeacherDao;
+import com.tongji.dao.MyFileDao;
 import com.tongji.dao.TeacherDao;
 import com.tongji.pojo.CourseTeacher;
+import com.tongji.pojo.MyFile;
 import com.tongji.pojo.Teacher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ResourceUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.List;
 
 
@@ -18,6 +25,9 @@ public class TeacherService {
 
     @Autowired
     CourseTeacherDao courseTeacherDao;
+
+    @Autowired
+    MyFileDao myFileDao;
 
     public List<Teacher> findAll(){
         return teacherDao.selectList(null);
@@ -43,5 +53,22 @@ public class TeacherService {
         return courseTeacherDao.selectList(new EntityWrapper<CourseTeacher>()
                                                 .eq("teacherid",teacherId)
                                             );
+    }
+
+    public void uploadFile(MultipartFile file, MyFile myFile) throws IOException {
+
+        String path = ResourceUtils.getURL("classpath:").getPath() +
+                "WebRoot" + File.separator + myFile.getCourseid() + File.separator + myFile.getTeacherid();
+        path = URLDecoder.decode(path,"utf-8");//处理空格变成%20的问题
+        System.out.println("< 文件存储路径 "+path+" >");
+
+        File uploadDir = new File(path);
+        if(!uploadDir.exists()) {
+            uploadDir.mkdirs();
+            System.out.println("< 创建文件夹 "+uploadDir.getAbsolutePath()+" >");
+        }
+        file.transferTo(new File(path,myFile.getFile_name()));
+
+        myFileDao.insert(myFile);
     }
 }

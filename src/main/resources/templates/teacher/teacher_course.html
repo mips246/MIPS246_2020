@@ -15,8 +15,33 @@
     <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
     <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
     <title>我的课程</title>
+
+    <script type="text/javascript">
+        function loadInfoTable(){
+            var teacherId = "[[${session.userid}]]";
+            $.ajax({
+                url:"[[@{/teacher/courses}]]",
+                type:"POST",
+                data:{
+                    teacherId:teacherId
+                },
+                dataType:"json",
+                success:function(data){
+                    var courses = data["courses"];
+                    for(var index in courses){
+                        tt = "<tr>"
+                            +"<td class='text-center'>"+courses[index].courseid+"</td>"
+                            +"<td class='text-center'>"+courses[index].coursename+"</td>"
+                            +"</tr>";
+                        $("#insertPlace").append(tt);
+                    }
+                }
+            });
+        }
+    </script>
+
 </head>
-<body class="gray-bg">
+<body class="gray-bg" onload="loadInfoTable()">
     <div class="wrapper wrapper-content animated fadeInRight">
         <div class="row">
 			<div class="col-sm-12">
@@ -36,11 +61,7 @@
                                             <th class="text-center">课程名</th>
                                         </tr>
 						            </thead>
-						            <tbody>
-                                        <tr th:each="course: ${courses}">
-                                            <td class='text-center' th:text="${course.courseid}"></td>
-                                            <td class='text-center' th:text="${course.coursename}"></td>
-                                        </tr>
+						            <tbody id="insertPlace">
 						            </tbody>
 						        </table>
 					        </div>

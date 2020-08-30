@@ -14,6 +14,10 @@ spring:
     servlet:
       content-type: text/html
     cache: false
+  servlet:
+    multipart:
+      max-file-size: 500MB
+      max-request-size: 525MB
 server:
   port: 8080
 mybatis-plus:

@@ -10,7 +10,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpSession;
+
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,18 +49,13 @@ public class TeacherController {
         return map;
     }
 
-    @GetMapping("/courses/{id}")
-    public String getCourses(@PathVariable("id") String teacherId,Model model){
+    @ResponseBody
+    @PostMapping("/courses")
+    public Map<String,Object> getCourses(@RequestParam("teacherId") String teacherId){
+        Map<String,Object> map = new HashMap<>();
         List<CourseTeacher> courses = teacherService.getCourses(teacherId);
-        model.addAttribute("courses",courses);
-        return "teacher/teacher_course";
-    }
-
-    @GetMapping("/upload/{id}")
-    public String getCourses2(@PathVariable("id") String teacherId,Model model){
-        List<CourseTeacher> courses = teacherService.getCourses(teacherId);
-        model.addAttribute("courses",courses);
-        return "teacher/teacher_upload";
+        map.put("courses",courses);
+        return map;
     }
 
     @PostMapping("/upload")
@@ -64,15 +63,28 @@ public class TeacherController {
                              @RequestParam("courseid") String courseId,
                              @RequestParam("course_section") int courseSection,
                              @RequestParam("teacherid") String teacherId,
-                             @RequestParam("uploadFile") MultipartFile file){
+                             @RequestParam("uploadFile") MultipartFile file,
+                             Model model){
 
         MyFile myFile = new MyFile();
+        String filename = file.getOriginalFilename();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+        myFile.setFile_url(File.separator + "WebRoot" + File.separator +
+                courseId + File.separator + teacherId + File.separator + filename);
         myFile.setCourseid(courseId);
         myFile.setTeacherid(teacherId);
         myFile.setFile_type(fileType);
         myFile.setCourse_section(courseSection);
-        myFile.setFile_name(file.getOriginalFilename());
+        myFile.setFile_name(filename);
+        myFile.setCreate_time(dateFormat.format(new Date()));
 
-        return null;
+        try {
+            teacherService.uploadFile(file,myFile);
+            model.addAttribute("msg","上传成功!");
+        } catch (IOException e) {
+            model.addAttribute("msg","上传失败!");
+        }
+        return "teacher/teacher_upload";
     }
 }

@@ -13,7 +13,7 @@ public class MyFile {
     private String courseid;
     private String teacherid;
     private int    file_type;
-    private int	   grade;
+    private Integer	   grade;
     private int    course_section;
     private String create_time;
     private String file_name;
@@ -66,11 +66,11 @@ public class MyFile {
         this.file_type = file_type;
     }
 
-    public int getGrade() {
+    public Integer getGrade() {
         return grade;
     }
 
-    public void setGrade(int grade) {
+    public void setGrade(Integer grade) {
         this.grade = grade;
     }
 
