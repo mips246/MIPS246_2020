@@ -12,7 +12,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -58,6 +60,30 @@ public class TeacherController {
         return map;
     }
 
+    @ResponseBody
+    @PostMapping("/files")
+    public Map<String,Object> getFiles(@RequestParam("teacherId") String teacherId,
+                                       @RequestParam("courseId") String courseId){
+
+        Map<String,Object> map = new HashMap<>();
+        List<MyFile> files = teacherService.getFiles(teacherId, courseId);
+        map.put("files",files);
+        return map;
+    }
+
+    @ResponseBody
+    @PostMapping("/deleteFile")
+    public Map<String,Object> deleteFile(@RequestParam("fileNo") int fileNo){
+        Map<String,Object> map = new HashMap<>();
+        try {
+            teacherService.deleteFile(fileNo);
+            map.put("msg","成功删除文件!");
+        } catch (FileNotFoundException | UnsupportedEncodingException e) {
+            map.put("msg","删除文件失败!");
+        }
+        return map;
+    }
+
     @PostMapping("/upload")
     public String uploadFile(@RequestParam("file_type") int fileType,
                              @RequestParam("courseid") String courseId,
@@ -70,6 +96,7 @@ public class TeacherController {
         String filename = file.getOriginalFilename();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
+        //第一个分隔符是否需要考虑去掉？
         myFile.setFile_url(File.separator + "WebRoot" + File.separator +
                 courseId + File.separator + teacherId + File.separator + filename);
         myFile.setCourseid(courseId);
@@ -83,7 +110,7 @@ public class TeacherController {
             teacherService.uploadFile(file,myFile);
             model.addAttribute("msg","上传成功!");
         } catch (IOException e) {
-            model.addAttribute("msg","上传失败!");
+            model.addAttribute("msg","上传失败，请重新尝试!");
         }
         return "teacher/teacher_upload";
     }

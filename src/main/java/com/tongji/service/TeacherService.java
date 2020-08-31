@@ -13,7 +13,9 @@ import org.springframework.util.ResourceUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.List;
 
@@ -55,6 +57,15 @@ public class TeacherService {
                                             );
     }
 
+    //获得教师指定课程下所有文件
+    public List<MyFile> getFiles(String teacherId,String courseId){
+        return myFileDao.selectList(new EntityWrapper<MyFile>()
+                                        .eq("teacherid",teacherId)
+                                        .eq("courseid",courseId)
+                                        .isNull("studentid")
+                                    );
+    }
+
     public void uploadFile(MultipartFile file, MyFile myFile) throws IOException {
 
         String path = ResourceUtils.getURL("classpath:").getPath() +
@@ -70,5 +81,18 @@ public class TeacherService {
         file.transferTo(new File(path,myFile.getFile_name()));
 
         myFileDao.insert(myFile);
+    }
+
+    public void deleteFile(int fileNo) throws FileNotFoundException, UnsupportedEncodingException {
+        MyFile myFile = myFileDao.selectById(fileNo);
+        String filepath = ResourceUtils.getURL("classpath:").getPath() +
+                "WebRoot" + File.separator + myFile.getCourseid() + File.separator + myFile.getTeacherid()
+                + File.separator + myFile.getFile_name();
+        filepath = URLDecoder.decode(filepath,"utf-8");
+        File deleteFile = new File(filepath);
+        if(deleteFile.exists() && deleteFile.isFile()){
+            deleteFile.delete();
+        }
+        myFileDao.deleteById(fileNo);
     }
 }
