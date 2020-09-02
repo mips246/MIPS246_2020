@@ -1,12 +1,8 @@
 package com.tongji.service;
 
 import com.baomidou.mybatisplus.mapper.EntityWrapper;
-import com.tongji.dao.CourseTeacherDao;
-import com.tongji.dao.MyFileDao;
-import com.tongji.dao.TeacherDao;
-import com.tongji.pojo.CourseTeacher;
-import com.tongji.pojo.MyFile;
-import com.tongji.pojo.Teacher;
+import com.tongji.dao.*;
+import com.tongji.pojo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ResourceUtils;
@@ -31,12 +27,34 @@ public class TeacherService {
     @Autowired
     MyFileDao myFileDao;
 
+    @Autowired
+    CourseSelectDao courseSelectDao;
+
+    @Autowired
+    StudentDao studentDao;
+
     public List<Teacher> findAll(){
         return teacherDao.selectList(null);
     }
 
     public Teacher findById(String id){
         return teacherDao.selectById(id);
+    }
+
+    //从学生选课表中，根据教师工号和课程号获取学生选课记录
+    public List<CourseSelect> findAllStuRecords(String teacherId,String courseId){
+        return courseSelectDao.selectList(new EntityWrapper<CourseSelect>()
+                                              .eq("teacherid",teacherId)
+                                              .eq("courseid",courseId)
+                                         );
+    }
+
+    public CourseSelect findStuRecordById(CourseSelect courseSelect){
+        return courseSelectDao.selectOne(courseSelect);
+    }
+
+    public Student findStudentById(String id){
+        return studentDao.selectById(id);
     }
 
     public int updatePassword(String userID,String oldPassword,String newPassword){

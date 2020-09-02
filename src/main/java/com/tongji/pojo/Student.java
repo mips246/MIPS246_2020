@@ -1,10 +1,16 @@
 package com.tongji.pojo;
 
+import com.baomidou.mybatisplus.annotations.TableId;
+import com.baomidou.mybatisplus.annotations.TableName;
+import com.baomidou.mybatisplus.enums.IdType;
+
 /**
  * @author Ryan
  * @date 2020/8/15 15:46
  */
+@TableName("student")
 public class Student {
+    @TableId(type= IdType.INPUT)
     private String userid;
     private String name;
     private String password;

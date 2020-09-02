@@ -1,8 +1,6 @@
 package com.tongji.controller;
 
-import com.tongji.pojo.CourseTeacher;
-import com.tongji.pojo.MyFile;
-import com.tongji.pojo.Teacher;
+import com.tongji.pojo.*;
 import com.tongji.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -16,10 +14,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Controller
 @RequestMapping("/teacher")
@@ -113,5 +108,45 @@ public class TeacherController {
             model.addAttribute("msg","上传失败，请重新尝试!");
         }
         return "teacher/teacher_upload";
+    }
+
+    @ResponseBody
+    @PostMapping("/students")
+    public Map<String,Object> findAllStudents(@RequestParam("teacherId") String teacherId,
+                                                    @RequestParam("courseId") String courseId){
+        Map<String,Object> map = new HashMap<>();
+        List<CourseSelect> records = teacherService.findAllStuRecords(teacherId, courseId);
+        map.put("records",records);
+        List<Student> students = new ArrayList<>();
+        //从record取得grade以及studentid
+        for (CourseSelect record : records){
+            String stuId = record.getStudentid();
+            //从student中获得name
+            Student student = teacherService.findStudentById(stuId);
+            students.add(student);
+        }
+        map.put("students",students);
+        return map;
+    }
+
+    @ResponseBody
+    @PostMapping("/student")
+    public Map<String,Object> findAllStudentById(@RequestParam("teacherId") String teacherId,
+                                                 @RequestParam("courseId") String courseId,
+                                                 @RequestParam("studentId") String studentId){
+
+        CourseSelect courseSelectCondition = new CourseSelect();
+        courseSelectCondition.setTeacherid(teacherId);
+        courseSelectCondition.setCourseid(courseId);
+        courseSelectCondition.setStudentid(studentId);
+
+        System.out.println(courseSelectCondition);
+        CourseSelect record = teacherService.findStuRecordById(courseSelectCondition);
+        Student student = teacherService.findStudentById(studentId);
+
+        Map<String,Object> map = new HashMap<>();
+        map.put("records",record);
+        map.put("students",student);
+        return map;
     }
 }
