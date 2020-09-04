@@ -121,4 +121,17 @@ public class TeacherService {
     public void updateCourseGrade(CourseSelect record){
         courseSelectDao.updateById(record);
     }
+
+    public List<MyFile> getHomework(String studentId,String courseId){
+        return myFileDao.selectList(new EntityWrapper<MyFile>()
+                .eq("studentid",studentId)
+                .eq("courseid",courseId)
+                .eq("file_type",0)
+                .isNull("teacherid")
+        );
+    }
+
+    public void updateHomeworkGrade(MyFile homework){
+        myFileDao.updateById(homework);
+    }
 }

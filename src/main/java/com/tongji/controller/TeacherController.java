@@ -159,4 +159,29 @@ public class TeacherController {
         map.put("msg","成绩提交成功");
         return map;
     }
+
+    @ResponseBody
+    @PostMapping("/homework")
+    public Map<String,Object> getHomework(@RequestParam("studentId") String studentId,
+                                           @RequestParam("courseId") String courseId){
+
+        Map<String,Object> map = new HashMap<>();
+        List<MyFile> homework = teacherService.getHomework(studentId, courseId);
+        map.put("homework",homework);
+        return map;
+    }
+
+    @ResponseBody
+    @PostMapping("/homeworkGrade")
+    public Map<String,Object> homeworkGrade(@RequestParam("fileNo") int fileNo,
+                                            @RequestParam("grade") int grade){
+
+        Map<String,Object> map = new HashMap<>();
+        MyFile homework = new MyFile();
+        homework.setFile_no(fileNo);
+        homework.setGrade(grade);
+        teacherService.updateHomeworkGrade(homework);
+        map.put("msg","成绩提交成功");
+        return map;
+    }
 }

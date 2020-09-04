@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="UTF-8">
+
+		<link th:href="@{/css/bootstrap.min14ed.css?v=3.3.6}" rel="stylesheet">
+		<link th:href="@{/css/font-awesome.min93e3.css?v=4.4.0}" rel="stylesheet">
+		<link th:href="@{/css/animate.min.css}" rel="stylesheet">
+		<link th:href="@{/css/style.min862f.css?v=4.1.0}" rel="stylesheet">
+		<link th:href="@{/css/plugins/sweetalert/sweetalert.css}" rel="stylesheet">
+		<script th:src="@{/js/plugins/sweetalert/sweetalert.min.js}"></script>
+
+		<script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+		<script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+		<script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+		<title>教师主页</title>
+
+		<script type="text/javascript">
+			function getUrlParams(name){
+				var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+				var r = window.location.search.substr(1).match(reg);
+				//if(r!=null) return unescape(r[2]);
+				if(r!=null) return decodeURI(r[2]);
+				return null;
+			}
+		</script>
+
+		<script type="text/javascript">
+			function validateGrade(grade){
+				var flag = true;
+				var reg = new RegExp(/^(?:[1-9]?\d|100)$/);
+				if(!reg.test(grade)){
+					alert("成绩不合法！");
+					flag=false;
+					return flag;
+				}
+				return flag;
+			}
+		</script>
+
+		<script type="text/javascript">
+			function loadInfoTable(){
+				var courseId = getUrlParams("courseid");
+				var studentId = getUrlParams("studentid");
+				$.ajax({
+					url:"[[@{/teacher/homework}]]",
+					type:"POST",
+					data:{
+						studentId:studentId,
+						courseId:courseId
+					},
+					dataType:"json",
+					success:function(data){
+						dealData(data);
+					}
+				});
+			}
+
+			function dealData(data){
+				$("#homeworkList").html("");
+				var homework = data["homework"];
+				for (var index in homework) {
+
+					var fileurl = homework[index].file_url;
+					var fileno = homework[index].file_no;
+					var filename = homework[index].file_name;
+					var coursesection = homework[index].course_section;
+					var createtime = homework[index].create_time;
+					var grade = homework[index].grade;
+					if(grade==null) grade = 0;
+
+					var str = (grade != 0 ? "disabled='disabled'" : " ");
+
+					var buttonStr0 = '<td class="text-center"><button onclick="updateHWGrade(\'' + fileno + '\')" class="btn btn-primary demo4">提交成绩</button></td>';
+					var buttonStr1 = "<td class='text-center'><button class='btn btn-danger demo4' disabled='disabled'>已提交</button></td>";
+					var buttonStr  =  grade != 0 ? buttonStr1 :buttonStr0;
+
+					tt = "<tr>"
+						+ "<td class='text-center'><a href=\'" + fileurl + "\' download=\'" + filename + "\'>" + filename + "</a></td>"
+						+ "<td class='text-center'>" + coursesection + "</td>"
+						+ "<td class='text-center'>" + createtime + "</td>"
+						+ "<td class='text-center'><input class='form-control' style='width:60px;margin:0 auto;padding:2px' id='gradeHW" + fileno + "' " + str + " type='number' value='" + grade + "' ></td>"
+						+ buttonStr
+						+ "</tr>";
+					$("#homeworkList").append(tt);
+				}
+			}
+		</script>
+
+		<script type="text/javascript">
+			function updateHWGrade(fileNo){
+				var grade = $("#gradeHW"+fileNo).val();
+				if(validateGrade(grade)){
+					$.ajax({
+						url:"[[@{/teacher/homeworkGrade}]]",
+						type:"POST",
+						data:{
+							fileNo:fileNo,
+							grade:grade
+						},
+						dataType:"json",
+						success:function(data){
+							alert(data.msg);
+							loadInfoTable();
+						}
+					});
+				}
+			}
+		</script>
+
+		<script type="text/javascript">
+			function back(){
+				var courseid = getUrlParams("courseid");
+				var url = "homeworkIndex.html?courseid=" + courseid;
+				window.location.href=url;
+			}
+		</script>
+
+	</head>
+	<body class="gray-bg" onload="loadInfoTable()">
+		<div class="wrapper wrapper-content animated fadeInRight">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="ibox float-e-margins">
+
+						<div class="ibox-title">
+							<h5>作业列表</h5>
+							<div class="col-sm-3 m-b-xs"></div>
+							<div class="col-sm-7"></div>
+							<div class="input-group">
+								<button type="button" onclick="back()" class="btn btn-primary btn-sm demo4">返回</button>
+							</div>
+						</div>
+						<div class="ibox-content">
+							<div class="table-responsive row">
+								<div class="col-sm-12">
+									<table class="table table-striped text-center">
+										<thead>
+											<tr>
+												<th class="text-center ">作业</th>
+												<th class="text-center ">课程小节</th>
+												<th class="text-center ">提交时间</th>
+												<th class="text-center ">成绩</th>
+												<th class="text-center "></th>
+											</tr>
+										</thead>
+										<tbody id="homeworkList">
+										</tbody>
+									</table>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<script th:src="@{/js/jquery.min.js?v=2.1.4}"></script>
+		<script th:src="@{/js/bootstrap.min.js?v=3.3.6}"></script>
+		<script th:src="@{/js/content.min.js?v=1.0.0}"></script>
+		<script th:src="@{/js/plugins/validate/jquery.validate.min.js}"></script>
+		<script th:src="@{/js/plugins/validate/messages_zh.min.js}"></script>
+		<script th:src="@{/js/demo/form-validate-demo.min.js}"></script>
+
+		<script type="text/javascript" src="http://tajs.qq.com/stats?sId=9051096" charset="UTF-8"></script>
+	</body>
+</html>

@@ -28,6 +28,8 @@ public class MyMVCConfig implements WebMvcConfigurer{
         registry.addViewController("/teacher/upload.html").setViewName("/teacher/teacher_upload");
         registry.addViewController("/teacher/files.html").setViewName("/teacher/teacher_file_manage");
         registry.addViewController("/teacher/courseGrade.html").setViewName("/teacher/teacher_submit_grade");
+        registry.addViewController("/teacher/homeworkIndex.html").setViewName("/teacher/teacher_check_homework_index");
+        registry.addViewController("/teacher/homework.html").setViewName("/teacher/teacher_check_homework");
     }
 
     @Override
