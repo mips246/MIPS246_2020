@@ -113,7 +113,7 @@ public class TeacherController {
     @ResponseBody
     @PostMapping("/students")
     public Map<String,Object> findAllStudents(@RequestParam("teacherId") String teacherId,
-                                                    @RequestParam("courseId") String courseId){
+                                              @RequestParam("courseId") String courseId){
         Map<String,Object> map = new HashMap<>();
         List<CourseSelect> records = teacherService.findAllStuRecords(teacherId, courseId);
         map.put("records",records);
@@ -135,18 +135,28 @@ public class TeacherController {
                                                  @RequestParam("courseId") String courseId,
                                                  @RequestParam("studentId") String studentId){
 
-        CourseSelect courseSelectCondition = new CourseSelect();
-        courseSelectCondition.setTeacherid(teacherId);
-        courseSelectCondition.setCourseid(courseId);
-        courseSelectCondition.setStudentid(studentId);
 
-        System.out.println(courseSelectCondition);
-        CourseSelect record = teacherService.findStuRecordById(courseSelectCondition);
+        List<CourseSelect> records = teacherService.findStuRecordById(teacherId,courseId,studentId);
         Student student = teacherService.findStudentById(studentId);
+        List<Student> students = new ArrayList<>();
+        students.add(student);
+        Map<String,Object> map = new HashMap<>();
+        map.put("records",records);
+        map.put("students",students);
+        return map;
+    }
+
+    @ResponseBody
+    @PostMapping("/courseGrade")
+    public Map<String,Object> courseGrade(@RequestParam("id") int id,
+                                          @RequestParam("grade") int grade){
 
         Map<String,Object> map = new HashMap<>();
-        map.put("records",record);
-        map.put("students",student);
+        CourseSelect record = new CourseSelect();
+        record.setId(id);
+        record.setGrade(grade);
+        teacherService.updateCourseGrade(record);
+        map.put("msg","成绩提交成功");
         return map;
     }
 }

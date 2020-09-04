@@ -49,8 +49,12 @@ public class TeacherService {
                                          );
     }
 
-    public CourseSelect findStuRecordById(CourseSelect courseSelect){
-        return courseSelectDao.selectOne(courseSelect);
+    public List<CourseSelect> findStuRecordById(String teacherId,String courseId,String studentId){
+        return courseSelectDao.selectList(new EntityWrapper<CourseSelect>()
+                .eq("teacherid",teacherId)
+                .eq("courseid",courseId)
+                .eq("studentid",studentId)
+        );
     }
 
     public Student findStudentById(String id){
@@ -112,5 +116,9 @@ public class TeacherService {
             deleteFile.delete();
         }
         myFileDao.deleteById(fileNo);
+    }
+
+    public void updateCourseGrade(CourseSelect record){
+        courseSelectDao.updateById(record);
     }
 }
